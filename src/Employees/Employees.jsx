@@ -8,9 +8,11 @@ const URL = `https://yalantis-react-school-api.yalantis.com/api/task0/users`
 
 
 function Employees() {
+
+
     const [ error, setError ] = useState(null);
     const [ isLoaded, setIsLoaded ] = useState(false);
-    const [ users, setUsers ] = useState([]);
+    const [ users, setUsers ] = useState({});
 
     useEffect(() => {
         fetch(URL)
@@ -18,7 +20,23 @@ function Employees() {
             .then(
                 (result) => {
                     setIsLoaded(true);
-                    setUsers(result);
+                    let sortUsersByAlphabet = alphabet.reduce(function (acc, cur) {
+                        acc[cur] = [];
+                        return acc;
+                    }, {});
+                    result.forEach(user => {
+                        const currentLetter = user.firstName.slice(0, 1);
+                        if (sortUsersByAlphabet?.[currentLetter]) {
+                            sortUsersByAlphabet[currentLetter].push({
+                                id: user.id,
+                                firstName: user.firstName,
+                                lastName: user.lastName,
+                                dob: user.dob,
+                                active: false
+                            })
+                        }
+                    })
+                    setUsers(sortUsersByAlphabet);
                 },
                 (error) => {
                     setIsLoaded(true);
@@ -33,38 +51,21 @@ function Employees() {
         return <div>Loading...</div>;
     } else {
 
-        let sortUsersByAlphabet = alphabet.reduce(function (acc, cur, i) {
-            acc[cur] = [];
-            return acc;
-        }, {});
 
-        users.forEach(user => {
-            const currentLetter = user.firstName.slice(0, 1);
-            if (sortUsersByAlphabet?.[currentLetter]) {
-                sortUsersByAlphabet[currentLetter] = [ ...sortUsersByAlphabet[currentLetter], {
-                    id: user.id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    dob: user.dob,
-                    active: false
-                } ]
-            }
-        })
 
         const changeHandler = (letter, user, value) => {
-            sortUsersByAlphabet[letter][user].active = value
-            console.log(sortUsersByAlphabet[letter][user].active)
+            setUsers(users, users[letter][user].active = value )
         }
 
         return (
-            <div className={style.letters}>
+            <div className={ style.letters }>
 
-                { Object.keys(sortUsersByAlphabet).map(letter => (
+                { Object.keys(users).map(letter => (
                     <Employee
-                        letter={letter}
-                        key={letter}
-                        users={sortUsersByAlphabet}
-                        changeHandler={changeHandler}
+                        letter={ letter }
+                        key={ letter }
+                        users={ users }
+                        changeHandler={ changeHandler }
                     />
                 )) }
             </div>
