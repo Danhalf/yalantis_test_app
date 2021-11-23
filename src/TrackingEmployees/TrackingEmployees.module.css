@@ -1,0 +1,8 @@
+.tracking {
+  min-width: 30%;
+  border-left: 4px solid #454857;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  color: #454857;
+}
