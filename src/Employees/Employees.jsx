@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 import style from './Employess.module.css';
 import Employee from './Employee/Employee';
+import API from "../API/API";
+import {  setEmployees, toggleActive } from "../store/employeesReducer";
+import { useDispatch } from "react-redux";
+
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
-const URL = `https://yalantis-react-school-api.yalantis.com/api/task0/users`;
+const fetchAPI = API;
 
-function Employees() {
-  const [error, setError] = useState(null);
+function Employees(props) {
+    const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [users, setUsers] = useState({});
-
+  // const [users, setUsers] = useState({});
+    const dispatch = useDispatch()
   useEffect(() => {
-    fetch(URL)
-      .then((res) => res.json())
+    fetchAPI
       .then(
         (result) => {
           setIsLoaded(true);
@@ -33,7 +36,7 @@ function Employees() {
               });
             }
           });
-          setUsers(sortUsersByAlphabet);
+            dispatch(setEmployees(sortUsersByAlphabet));
         },
         (error) => {
           setIsLoaded(true);
@@ -47,20 +50,17 @@ function Employees() {
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else {
-    const changeHandler = (letter, user, value) => {
-      setUsers(users, (users[letter][user].active = value));
-    };
 
-    return (
+      return (
       <div className={style.letters}>
-        {Object.keys(users).map((letter) => (
+        {Object.keys(props.employees).map((letter) => (
           <ul className={style.letter_list} key={letter}>
             <h3 className={style.letter_title}>{letter}</h3>
-            {users[letter].length ? (
-              users[letter].map((user, idx) => (
+            {props.employees[letter].length ? (
+                props.employees[letter].map((user, idx) => (
                 <Employee
                   user={user}
-                  changeHandler={changeHandler}
+                  toggleActive={dispatch(toggleActive(user))}
                   idx={idx}
                   letter={letter}
                 />

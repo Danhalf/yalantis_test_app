@@ -18,7 +18,7 @@ const Employee = (props) => (
         name={`${props.user.id}_active`}
         value={props.user.active}
         defaultChecked={props.user.active}
-        onChange={() => props.changeHandler(props.letter, props.idx, true)}
+        onChange={() => props.toggleActive}
       />
       <input
         label="not active"
@@ -26,7 +26,7 @@ const Employee = (props) => (
         name={`${props.user.id}_active`}
         value={!props.user.active}
         defaultChecked={!props.user.active}
-        onChange={() => props.changeHandler(props.letter, props.idx, false)}
+        onChange={() => props.toggleActive}
       />
     </div>
   </li>
