@@ -1,48 +1,47 @@
 import { useEffect, useState } from 'react';
 import style from './Employess.module.css';
 import Employee from './Employee/Employee';
-import API from "../API/API";
-import {  setEmployees, toggleActive } from "../store/employeesReducer";
-import { useDispatch } from "react-redux";
-
+import API from '../API/API';
+import { setEmployees } from '../store/employeesReducer';
+import { useDispatch } from 'react-redux';
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
 const fetchAPI = API;
 
 function Employees(props) {
-    const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  // const [users, setUsers] = useState({});
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
-    fetchAPI
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          let sortUsersByAlphabet = alphabet.reduce(function (acc, cur) {
-            acc[cur] = [];
-            return acc;
-          }, {});
-          result.forEach((user) => {
-            const currentLetter = user.firstName.slice(0, 1);
-            if (sortUsersByAlphabet?.[currentLetter]) {
-              sortUsersByAlphabet[currentLetter].push({
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                dob: user.dob,
-                active: false,
-              });
-            }
-          });
-            dispatch(setEmployees(sortUsersByAlphabet));
-        },
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      );
+    fetchAPI.then(
+      (result) => {
+        setIsLoaded(true);
+        let sortUsersByAlphabet = alphabet.reduce(function (acc, cur) {
+          acc[cur] = [];
+          return acc;
+        }, {});
+        result.forEach((user, i) => {
+          const currentLetter = user.firstName.slice(0, 1);
+          if (sortUsersByAlphabet?.[currentLetter]) {
+            sortUsersByAlphabet[currentLetter].push({
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              dob: user.dob,
+              active: localStorage.getItem('activeStatus').includes(user.id),
+            });
+          }
+        });
+
+        dispatch(setEmployees(sortUsersByAlphabet));
+      },
+      (error) => {
+        setIsLoaded(true);
+        setError(error);
+      }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) {
@@ -50,17 +49,16 @@ function Employees(props) {
   } else if (!isLoaded) {
     return <div>Loading...</div>;
   } else {
-
-      return (
+    return (
       <div className={style.letters}>
         {Object.keys(props.employees).map((letter) => (
           <ul className={style.letter_list} key={letter}>
             <h3 className={style.letter_title}>{letter}</h3>
             {props.employees[letter].length ? (
-                props.employees[letter].map((user, idx) => (
+              props.employees[letter].map((user, idx) => (
                 <Employee
                   user={user}
-                  toggleActive={dispatch(toggleActive(user))}
+                  toggleActive={props.toggleActive}
                   idx={idx}
                   letter={letter}
                 />
