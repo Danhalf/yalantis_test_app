@@ -2,7 +2,16 @@
   min-width: 30%;
   border-left: 4px solid #454857;
   display: flex;
-  justify-content: center;
-  align-items: baseline;
+  justify-content: start;
+  align-items: center;
   color: #454857;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
 }

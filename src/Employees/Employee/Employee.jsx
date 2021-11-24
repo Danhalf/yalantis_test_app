@@ -21,7 +21,7 @@ const Employee = (props) => {
                     defaultChecked={ props.user.active }
                     onChange={ () => {
                         setActive(true);
-                        return props.toggleActive({
+                        return props.addActive({
                             letter: props.letter,
                             idx: props.idx,
                             id: props.user.id,
@@ -40,7 +40,7 @@ const Employee = (props) => {
                     defaultChecked={ !props.user.active }
                     onChange={ () => {
                         setActive(false);
-                        return props.toggleActive({
+                        return props.deleteActive({
                             letter: props.letter,
                             idx: props.idx,
                             id: props.user.id,

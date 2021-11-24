@@ -55,10 +55,11 @@ function Employees(props) {
           <ul className={style.letter_list} key={letter}>
             <h3 className={style.letter_title}>{letter}</h3>
             {props.employees[letter].length ? (
-              props.employees[letter].map((user, idx) => (
+              props.employees[letter].sort((a, b) => a.firstName.localeCompare(b.firstName)).map((user, idx) => (
                 <Employee
                   user={user}
-                  toggleActive={props.toggleActive}
+                  addActive={props.addActive}
+                  deleteActive={props.deleteActive}
                   idx={idx}
                   letter={letter}
                 />

@@ -1,7 +1,7 @@
 import style from './App.module.css';
 import Employees from './Employees/Employees';
 import TrackingEmployees from './TrackingEmployees/TrackingEmployees';
-import { setEmployees, toggleActive } from "./store/employeesReducer";
+import { setEmployees, addActive, deleteActive } from "./store/employeesReducer";
 import { connect } from "react-redux";
 
 function App() {
@@ -19,6 +19,6 @@ const mapStateToProps = state => ({
 });
 
 
-const EmployeesContainer = connect(mapStateToProps, {setEmployees, toggleActive})(Employees)
-const TrackingEmployeesContainer = connect(mapStateToProps, {toggleActive})(TrackingEmployees)
+const EmployeesContainer = connect(mapStateToProps, {setEmployees, addActive, deleteActive})(Employees)
+const TrackingEmployeesContainer = connect(mapStateToProps, {toggleActive: addActive})(TrackingEmployees)
 export default App;
