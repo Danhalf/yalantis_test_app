@@ -29,7 +29,7 @@ function Employees(props) {
               firstName: user.firstName,
               lastName: user.lastName,
               dob: user.dob,
-              active: localStorage.getItem('activeStatus').includes(user.id),
+              active: localStorage.getItem('activeStatus') ? localStorage.getItem('activeStatus').includes(user.id) : false,
             });
           }
         });

@@ -8,16 +8,17 @@ function App() {
     return (
         <div className={ style.app }>
             <EmployeesContainer/>
-            <TrackingEmployees/>
+            <TrackingEmployeesContainer/>
         </div>
     );
 }
 
 const mapStateToProps = state => ({
     employees: state.employees,
+    trackingEmployees: state.trackingEmployees
 });
 
 
 const EmployeesContainer = connect(mapStateToProps, {setEmployees, toggleActive})(Employees)
-
+const TrackingEmployeesContainer = connect(mapStateToProps, {toggleActive})(TrackingEmployees)
 export default App;
