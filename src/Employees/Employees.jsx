@@ -29,7 +29,9 @@ function Employees(props) {
               firstName: user.firstName,
               lastName: user.lastName,
               dob: user.dob,
-              active: localStorage.getItem('activeStatus') ? localStorage.getItem('activeStatus').includes(user.id) : false,
+              active: localStorage.getItem('activeStatus')
+                ? localStorage.getItem('activeStatus').includes(user.id)
+                : false,
             });
           }
         });
@@ -55,15 +57,18 @@ function Employees(props) {
           <ul className={style.letter_list} key={letter}>
             <h3 className={style.letter_title}>{letter}</h3>
             {props.employees[letter].length ? (
-              props.employees[letter].sort((a, b) => a.firstName.localeCompare(b.firstName)).map((user, idx) => (
-                <Employee
-                  user={user}
-                  addActive={props.addActive}
-                  deleteActive={props.deleteActive}
-                  idx={idx}
-                  letter={letter}
-                />
-              ))
+              props.employees[letter]
+                .sort((a, b) => a.firstName.localeCompare(b.firstName))
+                .map((user, idx) => (
+                  <Employee
+                    user={user}
+                    key={`${idx}${letter}`}
+                    addActive={props.addActive}
+                    deleteActive={props.deleteActive}
+                    idx={idx}
+                    letter={letter}
+                  />
+                ))
             ) : (
               <li className={`${style.letter_item} ${style.letter_empty}`}>
                 No Employees

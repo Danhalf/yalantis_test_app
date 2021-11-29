@@ -2,7 +2,6 @@
   min-width: 30%;
   border-left: 4px solid #454857;
   display: flex;
-  justify-content: start;
   align-items: center;
   color: #454857;
   flex-direction: column;
